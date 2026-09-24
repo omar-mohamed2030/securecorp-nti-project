@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SecureCorp — Enterprise Network Project</title>
+<meta name="description" content="A multi-site enterprise network designed and configured in Cisco Packet Tracer by Omar Mohamed — NTI Graduation Project.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #10151F;
+    --panel: #161D2B;
+    --panel-2: #1B2334;
+    --text: #E8ECF3;
+    --text-dim: #8B93A6;
+    --accent: #E8A33D;
+    --good: #3FB8AF;
+    --line: #2A3348;
+    --radius: 3px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    line-height: 1.55;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(16,21,31,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; }
+  .brand { font-family: 'IBM Plex Mono'; font-size: 14px; letter-spacing: 0.02em; color: var(--text); }
+  .brand span { color: var(--accent); }
+  nav .links { display: flex; gap: 24px; font-family: 'IBM Plex Mono'; font-size: 13px; color: var(--text-dim); }
+  nav .links a { color: var(--text-dim); }
+  nav .links a:hover { color: var(--text); text-decoration: none; }
+  @media (max-width: 640px) { nav .links { display: none; } }
+
+  /* ---------- hero ---------- */
+  header.hero { padding: 72px 0 48px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font-family: 'IBM Plex Mono'; font-size: 13px; color: var(--good); margin-bottom: 18px; }
+  .eyebrow::before { content: "● "; }
+  h1 {
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.08;
+    margin: 0 0 20px;
+    max-width: 14ch;
+  }
+  .lede { font-size: 18px; color: var(--text-dim); max-width: 58ch; margin: 0 0 32px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 28px; font-family: 'IBM Plex Mono'; font-size: 13px; color: var(--text-dim); }
+  .hero-meta strong { color: var(--text); font-weight: 500; }
+
+  .topo-frame {
+    margin-top: 48px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    padding: 6px;
+  }
+  .topo-frame img { display: block; width: 100%; height: auto; }
+  .topo-caption { font-family: 'IBM Plex Mono'; font-size: 12px; color: var(--text-dim); padding: 10px 6px 2px; }
+
+  /* ---------- sections ---------- */
+  section { padding: 64px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: none; }
+  .section-label {
+    font-family: 'IBM Plex Mono'; font-size: 13px; color: var(--accent);
+    margin: 0 0 8px;
+  }
+  h2 { font-size: 28px; font-weight: 600; margin: 0 0 28px; max-width: 24ch; }
+  p.body-text { color: var(--text-dim); max-width: 68ch; font-size: 16px; }
+
+  /* requirements grid */
+  .req-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+  }
+  @media (max-width: 640px) { .req-grid { grid-template-columns: 1fr; } }
+  .req-item { background: var(--panel); padding: 20px 22px; }
+  .req-item .req-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .req-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); flex-shrink: 0; }
+  .req-name { font-weight: 600; font-size: 15px; }
+  .req-detail { color: var(--text-dim); font-size: 13.5px; font-family: 'IBM Plex Mono'; line-height: 1.5; }
+
+  /* architecture stats */
+  .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 8px; }
+  @media (max-width: 640px) { .stat-row { grid-template-columns: repeat(2, 1fr); } }
+  .stat { border-left: 2px solid var(--accent); padding-left: 14px; }
+  .stat-num { font-family: 'IBM Plex Mono'; font-size: 30px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-label { color: var(--text-dim); font-size: 13px; margin-top: 6px; }
+
+  /* terminal proof block */
+  .terminal {
+    background: #0B0F17; border: 1px solid var(--line);
+    font-family: 'IBM Plex Mono'; font-size: 13px; color: #A7E6C4;
+    padding: 20px 22px; overflow-x: auto; margin-top: 28px;
+  }
+  .terminal .bar { display: flex; gap: 6px; margin-bottom: 14px; }
+  .terminal .dot { width: 9px; height: 9px; border-radius: 50%; background: #3A4358; }
+  .terminal pre { margin: 0; white-space: pre; }
+  .terminal .prompt { color: var(--accent); }
+  .terminal .ok { color: #A7E6C4; }
+  .terminal .dim { color: #5C6478; }
+
+  /* deliverables */
+  .deliv-list { border-top: 1px solid var(--line); margin-top: 8px; }
+  .deliv-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 0; border-bottom: 1px solid var(--line);
+  }
+  .deliv-left { display: flex; align-items: baseline; gap: 16px; }
+  .deliv-num { font-family: 'IBM Plex Mono'; color: var(--text-dim); font-size: 13px; width: 20px; }
+  .deliv-name { font-size: 16px; font-weight: 500; }
+  .deliv-link { font-family: 'IBM Plex Mono'; font-size: 13px; }
+
+  /* stack list */
+  .stack-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .stack-chip {
+    font-family: 'IBM Plex Mono'; font-size: 13px; color: var(--text-dim);
+    border: 1px solid var(--line); padding: 6px 12px;
+  }
+
+  footer { padding: 48px 0 64px; }
+  .footer-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px; }
+  .footer-name { font-size: 20px; font-weight: 600; }
+  .footer-role { color: var(--text-dim); font-size: 14px; margin-top: 4px; }
+  .footer-links { display: flex; gap: 20px; font-family: 'IBM Plex Mono'; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">Secure<span>Corp</span> / network-project</div>
+    <div class="links">
+      <a href="#overview">Overview</a>
+      <a href="#requirements">Requirements</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#deliverables">Deliverables</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow mono">NTI Graduation Project — Cisco Packet Tracer</div>
+    <h1>A multi-site enterprise network, built and proven end to end.</h1>
+    <p class="lede">Two branch offices, redundant HQ core, wireless staff and guest segmentation, centralized services, and IP telephony — designed, configured, and verified across every layer of the stack.</p>
+    <div class="hero-meta">
+      <span><strong>Author</strong> — Omar Mohamed</span>
+      <span><strong>Simulator</strong> — Cisco Packet Tracer</span>
+      <span><strong>Institute</strong> — NTI</span>
+    </div>
+    <div class="topo-frame">
+      <img src="docs/topology.png" alt="SecureCorp network topology diagram showing HQ core, two branch sites, and the ISP link">
+    </div>
+    <div class="topo-caption">Full topology — dual core switches, dual edge routers, two branches, voice gateway, and HQ server farm.</div>
+  </div>
+</header>
+
+<section id="overview">
+  <div class="wrap">
+    <p class="section-label mono">01 / Overview</p>
+    <h2>Every layer of a real enterprise network, in one lab build.</h2>
+    <p class="body-text">SecureCorp is a fictional company used as the basis for this project: a headquarters site with redundant core infrastructure, two branch offices connected over WAN, and a full set of internal services. The build covers routing, switching, security, wireless, voice, and address translation as a single cohesive design rather than isolated exercises.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">Sites — HQ + 2 branches</div></div>
+      <div class="stat"><div class="stat-num">8</div><div class="stat-label">VLANs in production use</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">OSPF areas</div></div>
+      <div class="stat"><div class="stat-num">3</div><div class="stat-label">IP phones registered</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="requirements">
+  <div class="wrap">
+    <p class="section-label mono">02 / Requirements</p>
+    <h2>All ten project requirements, implemented and tested.</h2>
+    <div class="req-grid">
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">Routed network</span></div>
+        <div class="req-detail">Every VLAN routed at redundant core SVIs; branches use router-on-a-stick.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">Routing — Static + OSPF</span></div>
+        <div class="req-detail">Multi-area OSPF backbone, static default routes redistributed to every site.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">Security</span></div>
+        <div class="req-detail">Port security, SSH + local AAA, extended ACL isolating the guest network.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">VLAN segmentation</span></div>
+        <div class="req-detail">HR, Finance, IT, Servers, Voice, Wi-Fi Staff, Wi-Fi Guest, Management.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">Core services</span></div>
+        <div class="req-detail">DHCP, DNS, HTTP, FTP, and email — centralized and relayed to every VLAN.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">EtherChannel</span></div>
+        <div class="req-detail">LACP-bundled links between core switches for throughput and redundancy.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">FHRP — HSRP</span></div>
+        <div class="req-detail">Active/standby gateway redundancy split across both core switches.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">WLAN</span></div>
+        <div class="req-detail">Separate staff and guest SSIDs, each mapped to its own VLAN and policy.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">NAT</span></div>
+        <div class="req-detail">PAT for general internet access, static forwarding for public-facing servers.</div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-top"><span class="req-dot"></span><span class="req-name">IP telephony</span></div>
+        <div class="req-detail">Cisco CME voice gateway; phones registered at HQ and both branch sites.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <p class="section-label mono">03 / Verification</p>
+    <h2>Proven with live output, not just written down.</h2>
+    <p class="body-text">Every subsystem was tested against real device output before being marked complete — OSPF adjacency states, HSRP failover behavior, EtherChannel bundling, and NAT translation tables were all confirmed on the running devices.</p>
+    <div class="terminal">
+      <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <pre><span class="prompt">CORE-SW1#</span> show etherchannel summary
+Group  Port-channel  Protocol  Ports
+1      Po1<span class="ok">(SU)</span>          LACP      Gig1/0/2<span class="ok">(P)</span> Gig1/0/3<span class="ok">(P)</span> Gig1/0/4<span class="ok">(P)</span>
+
+<span class="prompt">CORE-SW1#</span> show standby brief
+Interface  Grp  Pri  P  State     Active         Standby
+Vl10       10   150  P  <span class="ok">Active</span>    local          192.168.10.3
+Vl30       30   100     Standby  192.168.30.3   local
+
+<span class="prompt">EDGE-R2#</span> show ip nat translations
+Pro  Inside global      Inside local        Outside global
+icmp 100.64.0.2:1       192.168.30.109:1    100.64.0.1:1  <span class="dim">← PAT confirmed live</span></pre>
+    </div>
+  </div>
+</section>
+
+<section id="deliverables">
+  <div class="wrap">
+    <p class="section-label mono">04 / Deliverables</p>
+    <h2>Full project package.</h2>
+    <div class="deliv-list">
+      <div class="deliv-row">
+        <div class="deliv-left"><span class="deliv-num mono">01</span><span class="deliv-name">GitHub Repository</span></div>
+        <a class="deliv-link" href="https://github.com/omar-mohamed2030/securecorp-nti-project">view repo →</a>
+      </div>
+      <div class="deliv-row">
+        <div class="deliv-left"><span class="deliv-num mono">02</span><span class="deliv-name">Packet Tracer Project (.pkt)</span></div>
+        <a class="deliv-link" href="PASTE_PROJECT_PKT_LINK_HERE">open ↗</a>
+      </div>
+      <div class="deliv-row">
+        <div class="deliv-left"><span class="deliv-num mono">03</span><span class="deliv-name">Presentation</span></div>
+        <a class="deliv-link" href="PASTE_PRESENTATION_LINK_HERE">open ↗</a>
+      </div>
+      <div class="deliv-row">
+        <div class="deliv-left"><span class="deliv-num mono">04</span><span class="deliv-name">Documentation</span></div>
+        <a class="deliv-link" href="docs/SecureCorp-Documentation.md">read here →</a>
+      </div>
+      <div class="deliv-row">
+        <div class="deliv-left"><span class="deliv-num mono">05</span><span class="deliv-name">Addressing / VLAN Spreadsheet</span></div>
+        <a class="deliv-link" href="PASTE_EXCEL_LINK_HERE">open ↗</a>
+      </div>
+      <div class="deliv-row">
+        <div class="deliv-left"><span class="deliv-num mono">06</span><span class="deliv-name">Demo Video</span></div>
+        <a class="deliv-link" href="PASTE_VIDEO_LINK_HERE">watch ↗</a>
+      </div>
+    </div>
+
+    <p class="section-label mono" style="margin-top:48px;">Built with</p>
+    <div class="stack-list">
+      <span class="stack-chip">OSPF (multi-area)</span>
+      <span class="stack-chip">VLANs / 802.1Q</span>
+      <span class="stack-chip">EtherChannel — LACP</span>
+      <span class="stack-chip">HSRP</span>
+      <span class="stack-chip">Extended ACLs</span>
+      <span class="stack-chip">Port Security</span>
+      <span class="stack-chip">SSH + AAA</span>
+      <span class="stack-chip">DHCP / DNS / HTTP / FTP</span>
+      <span class="stack-chip">Cisco CME</span>
+      <span class="stack-chip">WPA2-PSK WLAN</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div>
+        <div class="footer-name">Omar Mohamed</div>
+        <div class="footer-role">NTI Graduation Project — 2026</div>
+      </div>
+      <div class="footer-links">
+        <a href="http://www.linkedin.com/in/omar-mohamed-b732653ab">LinkedIn</a>
+        <a href="https://github.com/omar-mohamed2030/securecorp-nti-project">GitHub</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
