@@ -1,0 +1,12 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Packet Tracer autosave/backup files
+*.pkt.bak
+*.pka
+
+# Office temp files
+~$*.docx
+~$*.pptx
+~$*.xlsx
